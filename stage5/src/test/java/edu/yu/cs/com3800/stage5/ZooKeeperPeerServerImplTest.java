@@ -1,6 +1,6 @@
 package edu.yu.cs.com3800.stage5;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.*;
 import java.net.MalformedURLException;
