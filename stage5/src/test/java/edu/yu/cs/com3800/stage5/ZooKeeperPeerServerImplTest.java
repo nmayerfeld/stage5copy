@@ -3,6 +3,7 @@ package edu.yu.cs.com3800.stage5;
 import edu.yu.cs.com3800.Message;
 import edu.yu.cs.com3800.Vote;
 import edu.yu.cs.com3800.ZooKeeperPeerServer;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,7 +21,9 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class DemoWithLeaderKilled9Nodes {
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ZooKeeperPeerServerImplTest {
     private String validClass = "package edu.yu.cs.fall2019.com3800.stage1;\n\npublic class HelloWorld\n{\n    public String run()\n    {\n        return \"Hello world!\";\n    }\n}\n";
 
     private LinkedBlockingQueue<Message> outgoingMessages;
@@ -32,57 +35,59 @@ public class DemoWithLeaderKilled9Nodes {
     private ArrayList<ZooKeeperPeerServer> servers;
     private List<CompletableFuture<HttpResponse<String>>> responses=new ArrayList<>();
     private GatewayServer gs;
-    public DemoWithLeaderKilled9Nodes() throws Exception {
-        //step 1: create sender & sending queue
-        //step 2: create servers
-        createServers();
-        HttpClient client=HttpClient.newBuilder().build();
-        URL url=new URL("http://localhost:8090/compileandrun");
-        //step2.1: wait for servers to get started
+    @Test
+    public void lotsOfServersTest(){
         try {
-            Thread.sleep(5000);
+            createServers();
+            HttpClient client=HttpClient.newBuilder().build();
+            URL url=new URL("http://localhost:8090/compileandrun");
+            //step2.1: wait for servers to get started
+            try {
+                Thread.sleep(5000);
+            }
+            catch (InterruptedException e) {
+            }
+            printLeaders();
+            //step 3: since we know who will win the election, send requests to the leader, this.leaderPort
+            for (int i = 0; i < 10; i++) {
+                String code = this.validClass.replace("world!", "world! from code version " + i);
+                sendMessage(client,code,url);
+            }
+            try {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e) {
+                Thread.sleep(3000);
+            }
+            System.out.println("killing worker at "+System.currentTimeMillis());
+            this.servers.get(7).shutdown();
+            System.out.println("finished killing worker at "+System.currentTimeMillis());
+            try {
+                Thread.sleep(30000);
+            }
+            catch (InterruptedException e) {
+                Thread.sleep(30000);
+            }
+            this.servers.get(0).shutdown();
+            System.out.println("finished killing worker at "+System.currentTimeMillis());
+            try {
+                Thread.sleep(60000);
+            }
+            catch (InterruptedException e) {
+                Thread.sleep(60000);
+            }
+            for (int i = 10; i < 20; i++) {
+                String code = this.validClass.replace("world!", "world! from code version " + i);
+                sendMessage(client,code,url);
+            }
+            //step 4: validate responses from leader
+            printResponses();
+            //step 5: stop servers
+            stopServers();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (InterruptedException e) {
-        }
-        printLeaders();
-        //step 3: since we know who will win the election, send requests to the leader, this.leaderPort
-        for (int i = 0; i < 10; i++) {
-            String code = this.validClass.replace("world!", "world! from code version " + i);
-            sendMessage(client,code,url);
-        }
-        try {
-            Thread.sleep(3000);
-        }
-        catch (InterruptedException e) {
-            Thread.sleep(3000);
-        }
-        System.out.println("killing worker at "+System.currentTimeMillis());
-        this.servers.get(7).shutdown();
-        System.out.println("finished killing worker at "+System.currentTimeMillis());
-        try {
-            Thread.sleep(30000);
-        }
-        catch (InterruptedException e) {
-            Thread.sleep(30000);
-        }
-        this.servers.get(0).shutdown();
-        System.out.println("finished killing worker at "+System.currentTimeMillis());
-        try {
-            Thread.sleep(60000);
-        }
-        catch (InterruptedException e) {
-            Thread.sleep(60000);
-        }
-        for (int i = 10; i < 20; i++) {
-            String code = this.validClass.replace("world!", "world! from code version " + i);
-            sendMessage(client,code,url);
-        }
-        //step 4: validate responses from leader
-        printResponses();
-        //step 5: stop servers
-        stopServers();
     }
-
     private void printLeaders() {
         for (ZooKeeperPeerServer server : this.servers) {
             Vote leader = server.getCurrentLeader();
@@ -157,9 +162,5 @@ public class DemoWithLeaderKilled9Nodes {
             this.servers.add(server);
             server.start();
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        new DemoWithLeaderKilled9Nodes();
     }
 }
