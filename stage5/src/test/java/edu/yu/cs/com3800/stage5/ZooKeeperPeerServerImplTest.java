@@ -73,6 +73,7 @@ public class ZooKeeperPeerServerImplTest {
                     .build();
             requestResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (URISyntaxException | IOException | InterruptedException e) {
+            System.out.println(e);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(outputStream);
             e.printStackTrace(printStream);
