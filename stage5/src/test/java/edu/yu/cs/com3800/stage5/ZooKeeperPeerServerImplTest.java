@@ -68,7 +68,6 @@ public class ZooKeeperPeerServerImplTest {
         try {
             request = HttpRequest
                     .newBuilder(urlForCheckingLeader.toURI())
-                    .headers("Content-Type","text/x-java-source")
                     .GET()
                     .build();
             requestResponse = client.send(request, HttpResponse.BodyHandlers.ofString());

@@ -12,13 +12,17 @@ public class ZKPSInstance {
         Map<Long, InetSocketAddress> peerIDToUDPAddress=getMapFromString(args[2]);
         long gatewayID=Long.parseLong(args[3]);
         long myID=Long.parseLong(args[4]);
+        System.out.println("myID: "+myID);
+        System.out.println("gatewayID: "+gatewayID);
         if(myID==gatewayID){
+            System.out.println("starting the gateway gpsi and gateway server for id: "+gatewayID);
             GatewayPeerServerImpl gpsi=new GatewayPeerServerImpl(myPort,peerEpoch,myID,peerIDToUDPAddress);
             gpsi.start();
             GatewayServer gs=new GatewayServer(8090, gpsi);
             gs.start();
         }
         else{
+            System.out.println("starting zkpsi for id: "+myID);
             ZooKeeperPeerServerImpl zkpsi=new ZooKeeperPeerServerImpl(myPort,peerEpoch,myID,peerIDToUDPAddress,gatewayID);
             zkpsi.start();
         }
