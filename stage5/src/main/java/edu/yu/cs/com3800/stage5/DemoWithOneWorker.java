@@ -22,7 +22,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class DemoWithOneWorker {
     private String validClass = "package edu.yu.cs.fall2019.com3800.stage1;\n\npublic class HelloWorld\n{\n    public String run()\n    {\n        return \"Hello world!\";\n    }\n}\n";
-
     private LinkedBlockingQueue<Message> outgoingMessages;
     private LinkedBlockingQueue<Message> incomingMessages;
     private int[] ports = {8010, 8020, 8030};

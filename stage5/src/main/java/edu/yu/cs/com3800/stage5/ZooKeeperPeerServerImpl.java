@@ -211,7 +211,6 @@ public class ZooKeeperPeerServerImpl extends Thread implements ZooKeeperPeerServ
         //create a new map so that don't need to synchronize every single method that views this map
         // creating a new map and pointing the old reference at it is atomic!!!!
         //do the same for workers
-        System.out.println("marking dead peer: "+peerID+" on server: "+this.id+"at time "+System.currentTimeMillis());
         this.logger.log(Level.FINE,"Hit report failed peer on server: "+this.id+" for failed server with id: "+peerID+"at time: "+System.nanoTime());
 
         this.UDPAddressToPeerID.remove(this.peerIDtoUDPAddress.get(peerID));
