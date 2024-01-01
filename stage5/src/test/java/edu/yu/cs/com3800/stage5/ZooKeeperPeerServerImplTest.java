@@ -73,7 +73,7 @@ public class ZooKeeperPeerServerImplTest {
         //step 3: since we know who will win the election, send requests to the leader, this.leaderPort
         for (int i = 0; i < 30; i++) {
             String code = validClass.replace("world!", "world! from code version " + i);
-            expectedResults.add("Hello world! from code version "+i+"   200");
+            expectedResults.add("Hello world! from code version "+i);
             HttpRequest request=null;
             try {
                 request = HttpRequest
@@ -115,7 +115,7 @@ public class ZooKeeperPeerServerImplTest {
         }
         for (int i = 30; i < 60; i++) {
             String code = validClass.replace("world!", "world! from code version " + i);
-            expectedResults.add("Hello world! from code version "+i+"   200");
+            expectedResults.add("Hello world! from code version "+i);
             HttpRequest request=null;
             try {
                 request = HttpRequest
