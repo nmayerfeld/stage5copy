@@ -3,6 +3,7 @@ package edu.yu.cs.com3800.stage5;
 import edu.yu.cs.com3800.Message;
 import edu.yu.cs.com3800.Vote;
 import edu.yu.cs.com3800.ZooKeeperPeerServer;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class ZookeeperPeerServerImplTest2 {
     private ArrayList<ZooKeeperPeerServer> servers;
     private List<CompletableFuture<HttpResponse<String>>> responses=new ArrayList<>();
     private GatewayServer gs;
+    @Test
     public void leaderKilledTest() throws InterruptedException, ExecutionException {
         //step 1: create sender & sending queue
         //step 2: create servers
