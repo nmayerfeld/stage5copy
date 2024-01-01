@@ -3,6 +3,9 @@ package edu.yu.cs.com3800.stage5;
 import edu.yu.cs.com3800.Message;
 import edu.yu.cs.com3800.Vote;
 import edu.yu.cs.com3800.ZooKeeperPeerServer;
+import edu.yu.cs.com3800.stage5.GatewayPeerServerImpl;
+import edu.yu.cs.com3800.stage5.GatewayServer;
+import edu.yu.cs.com3800.stage5.ZooKeeperPeerServerImpl;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
