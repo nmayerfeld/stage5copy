@@ -227,7 +227,6 @@ public class GatewayServer implements LoggingServer {
                 this.server = HttpServer.create(new InetSocketAddress(httpPort), 0);
                 break;
             } catch (IOException e) {
-                System.out.println("failed to create httpserver");
                 this.logger.log(Level.FINE,"couldn't create HTTPServer, retrying");
             }
         }
@@ -238,7 +237,6 @@ public class GatewayServer implements LoggingServer {
         this.rht=new RequestHandlerThread(this.waitingRequests,this.gpsi,this.myTCPAddress);
     }
     public void start() {
-        System.out.println("starting gateway server");
         this.server.start();
         rht.start();
     }

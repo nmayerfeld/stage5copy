@@ -142,6 +142,7 @@ public class ZooKeeperPeerServerImplTest {
             HttpResponse<String> res=r.get();
             assertEquals(res.statusCode(),200);
             if(!expectedResults.contains(res.body())){
+                System.out.println(res.body());
                 assert false;
             }
         }
